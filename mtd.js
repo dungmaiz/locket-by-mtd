@@ -9,27 +9,29 @@ const options = {
     }
 }
 
-$httpClient.get(options, function (error, newResponse, data) {
+$httpClient.get(options, function(error, newResponse, data){
+  
     const ent = JSON.parse(data);
 
-    // Lấy thời gian hiện tại
-    const now = new Date();
-    const nowISO = now.toISOString();
-    const nowMillis = now.getTime();
+    // Get the current date and set the time to 01:01:01Z
+    const currentDate = new Date();
+    const currentDateStr = currentDate.toISOString().split('T')[0]; // Get the date part in YYYY-MM-DD format
+    const currentDateISO = `${currentDateStr}T01:01:01Z`;
+    const currentDateMs = new Date(currentDateISO).getTime();
 
     let jsonToUpdate = {
-        "request_date_ms": nowMillis,
-        "request_date": nowISO,
+        "request_date_ms": currentDateMs,
+        "request_date": currentDateISO,
         "subscriber": {
             "entitlement": {},
-            "first_seen": nowISO,
+            "first_seen": currentDateISO,
             "original_application_version": "9692",
-            "last_seen": nowISO,
+            "last_seen": currentDateISO,
             "other_purchases": {},
             "management_url": null,
             "subscriptions": {},
             "entitlements": {},
-            "original_purchase_date": nowISO,
+            "original_purchase_date": currentDateISO,
             "original_app_user_id": "70B24288-83C4-4035-B001-573285B21AE2",
             "non_subscriptions": {}
         }
@@ -43,8 +45,8 @@ $httpClient.get(options, function (error, newResponse, data) {
 
         for (const entitlement of entitlements) {
             jsonToUpdate.subscriber.entitlements[entitlement] = {
-                "purchase_date": nowISO,
-                "original_purchase_date": nowISO,
+                "purchase_date": currentDateISO,
+                "original_purchase_date": currentDateISO,
                 "expires_date": "9692-01-01T01:01:01Z",
                 "is_sandbox": false,
                 "ownership_type": "PURCHASED",
@@ -55,8 +57,8 @@ $httpClient.get(options, function (error, newResponse, data) {
             // Add product identifier to subscriptions
             jsonToUpdate.subscriber.subscriptions[productIdentifier] = {
                 "expires_date": "9692-01-01T01:01:01Z",
-                "original_purchase_date": nowISO,
-                "purchase_date": nowISO,
+                "original_purchase_date": currentDateISO,
+                "purchase_date": currentDateISO,
                 "is_sandbox": false,
                 "ownership_type": "PURCHASED",
                 "store": "app_store"
@@ -65,5 +67,6 @@ $httpClient.get(options, function (error, newResponse, data) {
     }
 
     body = JSON.stringify(jsonToUpdate);
-    $done({ body });
+    $done({body});
+
 });
