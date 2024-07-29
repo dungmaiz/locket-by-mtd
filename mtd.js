@@ -15,8 +15,11 @@ $httpClient.get(options, function(error, newResponse, data){
 
     // Get the current date and set the time to 01:01:01Z
     const currentDate = new Date();
-    const currentDateStr = currentDate.toISOString().split('T')[0]; // Get the date part in YYYY-MM-DD format
-    const currentDateISO = `${currentDateStr}T01:01:01Z`;
+    const year = currentDate.getUTCFullYear();
+    const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getUTCDate()).padStart(2, '0');
+    const fixedTime = "01:01:01Z";
+    const currentDateISO = `${year}-${month}-${day}T${fixedTime}`;
     const currentDateMs = new Date(currentDateISO).getTime();
 
     let jsonToUpdate = {
