@@ -21,6 +21,6 @@ scriptings:
 - http_response:
     name: MTD
     match: ^https:\/\/api\.revenuecat\.com\/.+\/(receipts$|subscribers\/[^/]+$)
-    script_url: https://raw.githubusercontent.com/dungmaiz/locket-by-mtd/main/mtd.js
+    script_url: https://dungmaiz.github.io/locket-by-mtd/mtd.js
     body_required: true
     update_interval: 5
